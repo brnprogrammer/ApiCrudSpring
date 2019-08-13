@@ -50,7 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET, "/topicos").permitAll()
 		.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
-		.anyRequest().authenticated()
+		.antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+		.anyRequest().authenticated() // qualquer outra URL é bloqueada
 		// cria sessao.and().formLogin();
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -60,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//configs de recursos estaticos....css, js, img etc
 	@Override
 	public void configure(WebSecurity web) throws Exception {
+		
+		web.ignoring().antMatchers("/**.html","/v2/api-docs", "/webjars/**", "/configuration/**","/swagger-resources/**");
 	}
 	
 
